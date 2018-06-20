@@ -225,7 +225,7 @@ a:hover {
 
 **********************************************************************/
 #head {
-  background: #f4f4f4 url(assets/images/bg_head.jpg) center;
+  background: #f4f4f4 url(assets/images/bg_head6.jpg) top center;
   background-size: 100% 1000px;
   color: #7C7C7C;
   padding: 30px 0 35px 0;
@@ -865,7 +865,10 @@ footer.entry-meta .meta-in {
 {
 	text-align: right;
 }
-
+#underfooter
+{
+	z-index:99999;
+}
  
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
