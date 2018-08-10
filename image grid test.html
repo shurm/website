@@ -40,14 +40,16 @@ body {
 .column img {
     margin-top: 8px;
     vertical-align: middle;
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
 }
 
-/* Responsive layout - makes a two column-layout instead of four columns */
-@media screen and (max-width: 800px) {
+/* Responsive layout - makes a 3 column-layout instead of 6 columns */
+@media screen and (max-width: 900px) {
     .column {
-        -ms-flex: 25%;
-        flex: 25%;
-        max-width: 25%;
+        -ms-flex: 33.3%;
+        flex: 33.3%;
+        max-width: 33.3%;
     }
 }
 
@@ -67,6 +69,25 @@ body {
 .reveal:hover {
 	overflow: auto;
 	height: auto;
+}
+
+.colorAnimationClass {
+   
+    -webkit-animation: colorAnimation 5s forwards; /* Safari 4.0 - 8.0 */
+   
+    animation: colorAnimation 5s forwards;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes colorAnimation {
+    from { -webkit-filter: grayscale(100%);}
+    to { -webkit-filter: grayscale(0%);}
+    
+}
+
+@keyframes colorAnimation {
+    from { filter: grayscale(100%);}
+    to { filter: grayscale(0%);}
 }
 
 </style>
@@ -138,5 +159,55 @@ $("#thediv").click(function() {
   </div>
 </div>
 
+<script>
+
+function addColorAnimation()
+{
+	if(imgList.length==0)
+		clearInterval(repeatingFunction);
+	else
+	{
+		var image = imgList.pop();
+		image.classList.add('colorAnimationClass');
+	}
+ 
+}
+function shuffle(arra1) {
+    var ctr = arra1.length, temp, index;
+
+// While there are elements in the array
+    while (ctr > 0) {
+// Pick a random index
+        index = Math.floor(Math.random() * ctr);
+// Decrease ctr by 1
+        ctr--;
+// And swap the last element with it
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }
+    return arra1;
+}
+
+var imageColumns = document.getElementsByClassName('column');
+
+var imgList = [];
+for(var a = 0; a<imageColumns.length; a++)
+{
+	var divColumn = imageColumns[a];
+	var imageChildren = divColumn.children;
+	for(var b = 0; b<imageChildren.length; b++)
+	{
+		imgList.push(imageChildren[b]);
+	}
+	
+}
+shuffle(imgList);
+addColorAnimation();
+var repeatingFunction = setInterval(addColorAnimation, 1500);
+
+//alert("valid js"+imgList.length);
+
+</script>
 </body>
 </html>
