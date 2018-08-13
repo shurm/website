@@ -852,7 +852,7 @@ footer.entry-meta .meta-in {
 }
 .condensed-borderless-table tr td {
     border: none !important;
-    padding: 0px !important;
+    padding: 5px !important;
 	
 	
 }
