@@ -302,7 +302,7 @@ a:hover {
 img {
   max-width: 100%;
 }
-.btn {
+.mybtn {
   font-size: 12px;
   font-size: 0.75rem;
   text-decoration: none;
@@ -328,31 +328,31 @@ img {
   padding: 12px 35px;
   text-shadow: 0 1px 0px #780d33;
 }
-.btn-primary {
+.mybtn-primary {
   color: #fff;
   background-color: #bd1550;
 }
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active {
+.mybtn-primary:hover,
+.mybtn-primary:focus,
+.mybtn-primary:active,
+.mybtn-primary.active {
   color: #fff;
   background-color: #e61f65;
 }
-.btn-action {
+.mybtn-action {
   font-weight: bold;
   background: transparent!important;
   border: 1px solid #333;
   text-shadow: none;
 }
-.btn-action:hover,
-.btn-action:focus,
-.btn-action:active,
-.btn-action.active {
+.mybtn-action:hover,
+.mybtn-action:focus,
+.mybtn-action:active,
+.mybtn-action.active {
   color: #bd1550;
   border-color: #bd1550;
 }
-.btn-lg {
+.mybtn-lg {
   padding: 15px 60px;
   font-size: 12px;
   line-height: 1.33;
