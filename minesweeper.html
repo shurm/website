@@ -31,7 +31,41 @@
 	<!--[if lt IE 9]> <script src="assets/js/html5shiv.js"></script> <![endif]-->
 	
 	<style>
-	
+	#dialogoverlay{
+		display: none;
+		opacity: .8;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		background: #FFF;
+		width: 100%;
+		z-index: 10;
+	}
+	#dialogbox{
+		display: none;
+		position: fixed;
+		background: #000;
+		border-radius:7px; 
+		width:550px;
+		z-index: 10;
+	}
+	#dialogbox > div{ background:#FFF; margin:8px; }
+	#dialogbox > div > #dialogboxhead{font-size:19px; padding:10px; color:#FFFFFF; }
+	#dialogbox > div > #dialogboxbody{padding:20px; color:#000000; text-align:center; }
+	.button2
+	{
+		opacity: 1.0;
+			filter: alpha(opacity=100);
+	}
+	.button2:hover 
+	{
+			opacity: 0.7;
+			filter: alpha(opacity=70);
+	}
+	.button2:active 
+	{
+			 background-image: url("http://dummyimage.com/100x100/eb00eb/fff");
+	}
 	#wrapper 
 	{
 	  display: flex;
@@ -40,6 +74,7 @@
 
 
 	</style>
+
 </head>
 <body class="home">
 
@@ -89,6 +124,14 @@
 
 	
 	<div class="container">
+		<div id="dialogoverlay">
+		</div>
+			<div id="dialogbox">
+				<div>
+					<div id="dialogboxhead"></div>
+					<div id="dialogboxbody"></div>
+				</div>
+			</div>
 		
 		<div class="container-contact100">
 		
@@ -96,46 +139,26 @@
 				<span class="contact100-form-symbol">
 					<img src="assets/images/icons/symbol-01.png" alt="SYMBOL-MAIL">
 				</span>
+				
+				<div id="wrapper">
+					<button id="startGame" class="btn-danger" onclick="mineSweeperGame()">Start Game</button>
+				</div>
+				
 
-				<form class="contact100-form validate-form">
-					<span class="contact100-form-title">
-						Drop Me A Message
-					</span>
-					
-					<div class = "flex-sb flex-w">
-					
-						<div class="wrap-input100 rs1 validate-input" data-validate = "Name is required">
-							<input id ="name" class="input100" type="text" name="name" placeholder="*Name">
-							<span class="focus-input100"></span>
-						</div>
+				<div id="grid" style="padding-bottom: 50px;">
 
-						<div class="wrap-input100 rs1 validate-input" data-validate = "Email is required: e@a.z">
-							<input id ="email" class="input100" type="text" name="email" placeholder="*Email Address">
-							<span class="focus-input100"></span>
-						</div>
-						
-						<div class="wrap-input100 rs1 " >
-							<input id ="subject" class="input100" type="text" name="subject" placeholder="Subject">
-							<span class="focus-input100"></span>
-						</div>
-
-						<div class="wrap-input100 rs1 ">
-							<input id ="phone" class="input100" type="text" name="phone_number" placeholder="Phone Number">
-							<span class="focus-input100"></span>
-						</div>
-
-						<div class="wrap-input100 validate-input" data-validate = "Message is required">
-							<textarea id ="message" class="input100" name="message" placeholder="*Message"></textarea>
-							<span class="focus-input100"></span>
-						</div>
-
-					</div>	
-					
-					<div id="wrapper">
-						<button onclick="mineSweeperGame()" class="contact100-form-btn" >Send <span class="glyphicon glyphicon-send"></span></button>
-					</div>
-					
-				</form>
+				</div>
+		
+				<div id= "radiobuttons" style="padding-top: 50px;">
+		
+				</div>
+		
+				<div id= "mines left" style="display:inline;">
+			
+					<h3 id= "mines heading" style="display:inline;"></h3>
+				
+					<h4 id="mines info" style="display:inline;"></h4>
+				</div>
 			</div>
 
 		</div>
@@ -193,6 +216,7 @@
 
 <!--Necessary-->
 <script src="assets/js/main.js"></script>
+<script src="assets/js/MineSweeper.js?2"></script>
 
 <script>
   

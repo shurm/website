@@ -20,31 +20,7 @@
 	box-sizing: border-box;
 }
 
-body, html {
-	height: 100%;
-	font-family: OpenSans-Regular, sans-serif;
-}
 
-/*---------------------------------------------*/
-a {
-	font-family: OpenSans-Regular;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
-	transition: all 0.4s;
-	-webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
-}
-
-a:focus {
-	outline: none !important;
-}
-
-a:hover {
-	text-decoration: none;
-}
 
 /*---------------------------------------------*/
 h1,h2,h3,h4,h5,h6 {
@@ -326,7 +302,8 @@ textarea.input100 {
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
-  display: flex;
+  display: block;
+  float:center;
   justify-content: center;
   align-items: center;
   padding: 0 20px;
