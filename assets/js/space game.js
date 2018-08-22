@@ -1,12 +1,13 @@
 
-var filePath="./images/space_game/"
-var meteorSpeed=3;
-var meteorDelay=3;
-var laserBlastSpeed=7;
-var lives=3;
+var filePath="assets/images/space_game/"
+var asteroidSpeed=6;
+var asteroidAnimationFrameDelay=2;
+var laserBlastSpeed=20;
+var lives;
 var gameOverTextSize=60;
+var delay=10;
 
-var maxMeteorsOnScreen=10;
+var maxAsteroidsOnScreen=10;
 
 
 var canvas = document.getElementById("myCanvas");
@@ -21,10 +22,10 @@ var currentScore=0;
 var earthBackgroundHeight=180;
 
 
-var numberOfMeteorsDestroyed=0;
+var numberOfAsteroidsDestroyed=0;
 
-var meteorSize =50;
-var delay=25;
+var asteroidSize =50;
+
 
 var laserHasBeenFired=false;
 var oTimes=3000/delay;
@@ -54,11 +55,11 @@ var laserCenterX=canvas.width/2-laserStandWidth/2;
 var laserCenterY=canvas.height-60;
 
 
-var meteors=[];
+var asteroids=[];
 var explosions=[];
 var corrospondingExplosionFrames=[];
 var totalExplosionFrames=24;
-var gameOver=false;
+var gameOver;
 
 var laser= new Image();
 laser.src = filePath+"laser.png";
@@ -74,22 +75,27 @@ var starryBackground= new Image();
 starryBackground.src = filePath+"starry-background.jpg";
 
 
-var earthBackground=new Sprite(filePath+"Earth-Sprite-Sheet.png",4,4,1);
+var earthBackground;
 
 var gameVariable;
 
-function meteorGame()
+function asteroidGame()
 {
-	meteors=[];
+	gameOverFunction();
+	
+	earthBackground=new Sprite(filePath+"Earth-Sprite-Sheet.png",4,4,1);
+	//document.getElementById("myCanvas");
+	asteroids=[];
 	explosions=[];
 	corrospondingExplosionFrames=[];
+	lives=3;
 	gameOver=false;
 	laserHasBeenFired=false;
 	currentScore=0;
-	numberOfMeteorsDestroyed=0;
+	numberOfAsteroidsDestroyed=0;
 	
 	
-	createMeteorsArray()	
+	createAsteroidsArray()	
 
 
 	ctx.translate(laserCenterX, laserCenterY);
@@ -117,13 +123,13 @@ function gameOverFunction()
 	canvas.removeEventListener("click", fireLaser);
 }
 
-function createMeteorsArray()
+function createAsteroidsArray()
 {
 	var a=0;
 	
-	for(a=0;a<maxMeteorsOnScreen;a++)
+	for(a=0;a<maxAsteroidsOnScreen;a++)
 	{
-		meteors.push(null);
+		asteroids.push(null);
 		
 		explosions.push(null);
 		
@@ -239,20 +245,20 @@ function fireLaser(evt)
 }
 
 
-function addMeteor()
+function addAsteroid()
 {
-	var t1=(canvas.width-meteorSize+1);
+	var t1=(canvas.width-asteroidSize+1);
 	
 	var randomIntialX=Math.floor(Math.random()*t1);
-	var q=new SpritePair(filePath,randomIntialX,0-meteorSize,meteorSize,meteorDelay);
+	var q=new SpritePair(filePath,randomIntialX,0-asteroidSize,asteroidSize,asteroidAnimationFrameDelay);
 	
 	var a=0;
 	
-	for(a=0;a<meteors.length;a++)
+	for(a=0;a<asteroids.length;a++)
 	{
-		if(meteors[a]==null)
+		if(asteroids[a]==null)
 		{		
-			meteors[a]=q;
+			asteroids[a]=q;
 			break;
 			
 		}
@@ -278,26 +284,26 @@ function isLaserOffScreen()
 		return true;
 	return false;
 }
-//draws the meteors 
+//draws the asteroids 
 
-function drawMeteors()
+function drawAsteroids()
 {
 	var a;
-	for(a=0;a<meteors.length;a++)
+	for(a=0;a<asteroids.length;a++)
 	{
-		if(meteors[a]!=null)
+		if(asteroids[a]!=null)
 		{
 		
-			if(meteors[a].exploding==true)
+			if(asteroids[a].exploding==true)
 			{
 				var b;
 				for(b=0;b<explosions.length;b++)
 				{
 					if(explosions[b]==null)
 					{
-						explosions[b]=meteors[a];
+						explosions[b]=asteroids[a];
 						corrospondingExplosionFrames[b]=0;
-						meteors[a]=null;
+						asteroids[a]=null;
 						break;
 					}
 				}
@@ -305,21 +311,21 @@ function drawMeteors()
 				continue;
 			}
 			
-			meteors[a].drawSprite(ctx);
-			if(meteors[a].delay==0)
+			asteroids[a].drawSprite(ctx);
+			if(asteroids[a].delay==0)
 			{
-				meteors[a].updateSprite();
+				asteroids[a].updateSprite();
 				
 				
 				if(gameOver==false)
-					meteors[a].y=meteors[a].y+=meteorSpeed;
+					asteroids[a].y=asteroids[a].y+=asteroidSpeed;
 				
-				meteors[a].delay=meteorDelay;
-				if(reachedTheEnd(meteors[a]))
+				asteroids[a].delay=asteroidAnimationFrameDelay;
+				if(reachedTheEnd(asteroids[a]))
 				{
 					earthBackground.updateSprite();
 					
-					meteors[a]=null;
+					asteroids[a]=null;
 					
 					lives--;
 					
@@ -331,7 +337,7 @@ function drawMeteors()
 				
 			}
 			else{
-				meteors[a].delay=meteors[a].delay-1;
+				asteroids[a].delay=asteroids[a].delay-1;
 			}
 		}
 	}
@@ -361,7 +367,7 @@ function drawExplosions()
 					
 					continue;
 				}
-				explosions[a].delay=meteorDelay;
+				explosions[a].delay=asteroidAnimationFrameDelay;
 			}
 			else{
 				explosions[a].delay=explosions[a].delay-1;
@@ -371,7 +377,7 @@ function drawExplosions()
 }
 
 
-function timeToCreateANewMeteor()
+function timeToCreateANewAsteroid()
 {
 	if(times<=0)
 	{
@@ -381,26 +387,26 @@ function timeToCreateANewMeteor()
 	return false;
 }
 
-function hitAMeteor(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
+function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 {
 
 	var a;
-	for(a=0;a<meteors.length;a++)
+	for(a=0;a<asteroids.length;a++)
 	{
-		if(meteors[a]!=null && meteors[a].exploding==false )
+		if(asteroids[a]!=null && asteroids[a].exploding==false )
 		{
-			var centerX=meteors[a].x+meteorSize/2;
-			var centerY=meteors[a].y+meteorSize/2;
+			var centerX=asteroids[a].x+asteroidSize/2;
+			var centerY=asteroids[a].y+asteroidSize/2;
 			
 			
 			
-			if(meteorTest(centerX,centerY,lazorTopLeftX,lazorTopLeftY)==true || meteorTest(centerX,centerY,lazorTopRightX,lazorTopRightY)==true )
+			if(asteroidTest(centerX,centerY,lazorTopLeftX,lazorTopLeftY)==true || asteroidTest(centerX,centerY,lazorTopRightX,lazorTopRightY)==true )
 			{
-				meteors[a].changeToExplosion();
+				asteroids[a].changeToExplosion();
 				
-				numberOfMeteorsDestroyed++;
+				numberOfAsteroidsDestroyed++;
 				
-				if(numberOfMeteorsDestroyed==6)
+				if(numberOfAsteroidsDestroyed==6)
 				{
 					oTimes= oTimes*2/3;
 					
@@ -471,7 +477,7 @@ function computeRoots(x,y)
 	return returnArray;
 }
 
-function meteorTest(meteorCenterX,meteorCenterY, lazorTopX,lazorTopY)
+function asteroidTest(asteroidCenterX,asteroidCenterY, lazorTopX,lazorTopY)
 {
 
 	var diff=laserBlastHeight;
@@ -480,7 +486,7 @@ function meteorTest(meteorCenterX,meteorCenterY, lazorTopX,lazorTopY)
 	
 	var i;
 	
-	var f=Math.floor(laserBlastHeight/meteorSize);
+	var f=Math.floor(laserBlastHeight/asteroidSize);
 	
 	var distance;
 	
@@ -488,13 +494,13 @@ function meteorTest(meteorCenterX,meteorCenterY, lazorTopX,lazorTopY)
 	
 	for(i=0;i<f;i++)
 	{
-		distance=Math.sqrt((meteorCenterX-x)*(meteorCenterX-x)+(meteorCenterY-y)*(meteorCenterY-y));
+		distance=Math.sqrt((asteroidCenterX-x)*(asteroidCenterX-x)+(asteroidCenterY-y)*(asteroidCenterY-y));
 		
-		if(distance<meteorSize/2)
+		if(distance<asteroidSize/2)
 			return true;	
 	
 	
-		diff-=meteorSize;
+		diff-=asteroidSize;
 		
 		array=computeRoots(laserCenterX+(blastY+diff)*Math.cos(theta* Math.PI / 180),laserCenterY+(blastY+diff)*Math.sin(theta* Math.PI / 180));
 		if(array[3]>array[1])
@@ -521,9 +527,9 @@ function meteorTest(meteorCenterX,meteorCenterY, lazorTopX,lazorTopY)
 		y=array[1];
 	}
 	
-	distance=Math.sqrt((meteorCenterX-x)*(meteorCenterX-x)+(meteorCenterY-y)*(meteorCenterY-y));
+	distance=Math.sqrt((asteroidCenterX-x)*(asteroidCenterX-x)+(asteroidCenterY-y)*(asteroidCenterY-y));
 		
-	if(distance<meteorSize/2)
+	if(distance<asteroidSize/2)
 		return true;
 
 	return false;
@@ -555,9 +561,9 @@ function drawStuff()
 		
 	if(gameOver==false)
 	{
-		if(timeToCreateANewMeteor()==true)
+		if(timeToCreateANewAsteroid()==true)
 		{
-			addMeteor();
+			addAsteroid();
 			times=oTimes;
 			
 		}
@@ -567,7 +573,7 @@ function drawStuff()
 		}
 	}
 	
-	drawMeteors();
+	drawAsteroids();
 	
 	drawExplosions();
 	
@@ -620,7 +626,7 @@ function drawStuff()
 		}
 		
 		
-		if(hitAMeteor(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)==false)
+		if(hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)==false)
 			blastY+=laserBlastSpeed;
 		else
 		{

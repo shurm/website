@@ -318,21 +318,6 @@ var filePath="assets/images/minesweeper/";
 	}
 	
 	
-var width=columns*buttonSize;
-var flagMode=false;
-var gameOver=false;
-document.getElementById("grid").style.width=width+"px";
-var pushed=[];
-var holder=[];
-var holder2=[];
-var flagged=[];
-var buttons=[];
-var singleRow=[];
-var r;
-	var c;
-
-var mineCoordinates=[];
-var numberOfMinesLeft=howManyMines;
 
 function mineSweeperGame()
 {
@@ -411,3 +396,19 @@ function closeDialog()
 	document.getElementById('dialogoverlay').style.display = "none";
 }
 
+var width=columns*buttonSize;
+var flagMode=false;
+var gameOver=false;
+document.getElementById("grid").style.width=width+"px";
+var pushed=[];
+var holder=[];
+var holder2=[];
+var flagged=[];
+var buttons=[];
+var singleRow=[];
+var r;
+var c;
+
+var mineCoordinates=[];
+var numberOfMinesLeft=howManyMines;
+mineSweeperGame();

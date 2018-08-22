@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"    content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author"      content="Sergey Pozhilov (GetTemplate.com)">
+	
+	<title>About Me</title>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="shortcut icon" href="assets/images/gt_favicon.png">
+	
+	<!-- Bootstrap -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" rel="stylesheet">
+	<!-- Icon font -->
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	
+	
+	<!-- Fonts -->
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alice|Open+Sans:400,300,700">
+	
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  
+	<!-- Custom styles -->
+	<link rel="stylesheet" href="styles.css">
+
+	<!--[if lt IE 9]> <script src="assets/js/html5shiv.js"></script> <![endif]-->
+</head>
+<body>
+
+
+
+<template>
+	<header id="header">
+		<div id="head" style = "background: #f4f4f4 url(../images/bg_head6.jpg) top center;
+	  background-size: 100% 1000px;" class="parallax" parallax-speed="1">
+			<h1 id="logo" class="text-center">
+				<span class="title">Michael Shur</span>
+				<span class="tagline">Computer Programmer and Tutor<br>
+					<a href="">michaelshur28@gmail.com</a></span>
+			</h1>
+		</div>
+
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+				</div>
+				
+				<div class="navbar-collapse collapse">
+					
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						
+						<li class="dropdown">
+							<a class="dropbtn" href="projects.html" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
+							<ul class="dropdown-menu dropdown-content">
+								<li><a href="projects.html#Games">Games</a></li>
+								<li><a href="projects.html#Games">Source Code</a></li>
+							</ul>
+						</li>
+						
+						
+						<li><a href="blog.html">Blog</a></li>
+					</ul>
+				
+				</div><!--/.nav-collapse -->			
+			</div>	
+		</nav>
+		
+		
+	</header>
+</template>
+<script>
+(function(){
+	var thisDoc = document.currentScript.owner;
+	var thatDoc = document;
+	var tmpl = thisDoc.querySelector('template');
+	var Element = Object.create(HTMLElement.prototype);
+	var shadowRoot;
+	
+	Element.createdCallback = function()
+	{
+		shadowRoot = this.createShadowRoot();
+		var clone = thisDoc.importNode(tmpl.content,true);
+		shadowRoot.appendChild(clone);
+	}
+	thatDoc.registerElement('navbar-and-jumbotron-sm',{prototype:Element});
+})()
+</script>
+
+<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="template.js"></script>
+</body>
+</html>
