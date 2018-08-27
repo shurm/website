@@ -1,13 +1,15 @@
 
 var filePath="assets/images/space_game/"
-var asteroidSpeed=6;
+var asteroidSpeed=2;
+var timeIntervalUntilNextFrame=10;
+var asteroidsToDestoryBeforeItGetsHarder = 7;
 var asteroidAnimationFrameDelay=2;
 var laserBlastSpeed=20;
 var lives;
 var gameOverTextSize=60;
-var delay=10;
 
 var maxAsteroidsOnScreen=10;
+var frameRateForAsteriodSpawn=2500/timeIntervalUntilNextFrame;
 
 
 var canvas = document.getElementById("myCanvas");
@@ -24,12 +26,13 @@ var earthBackgroundHeight=180;
 
 var numberOfAsteroidsDestroyed=0;
 
-var asteroidSize =50;
+var asteroidSize = 50;
 
 
 var laserHasBeenFired=false;
-var oTimes=3000/delay;
-var times=oTimes;
+
+
+var framesLeftUntilNextAsteriodSpawn=frameRateForAsteriodSpawn;
 
 var startR=110;
 var d=1;
@@ -95,7 +98,7 @@ function asteroidGame()
 	numberOfAsteroidsDestroyed=0;
 	
 	
-	createAsteroidsArray()	
+	createAsteroidsArray();
 
 
 	ctx.translate(laserCenterX, laserCenterY);
@@ -113,7 +116,7 @@ function asteroidGame()
 	
 	canvas.addEventListener("mousemove", moveLaser);
 	canvas.addEventListener("click", fireLaser);
-	gameVariable=setInterval(drawStuff,delay);
+	gameVariable=setInterval(drawStuff,timeIntervalUntilNextFrame);
 }
 
 function gameOverFunction()
@@ -260,18 +263,16 @@ function addAsteroid()
 		{		
 			asteroids[a]=q;
 			break;
-			
 		}
 	}
 	
 }
 
 
-function reachedTheEnd(spritePair)
+function hasHitTheEarth(asteroid)
 {
-
-	var end =canvas.height-spritePair.size;
-	if(spritePair.y>=end)
+	var end = canvas.height-asteroid.size;
+	if(asteroid.y>=end)
 	{
 		return true;
 	}
@@ -321,7 +322,7 @@ function drawAsteroids()
 					asteroids[a].y=asteroids[a].y+=asteroidSpeed;
 				
 				asteroids[a].delay=asteroidAnimationFrameDelay;
-				if(reachedTheEnd(asteroids[a]))
+				if(hasHitTheEarth(asteroids[a]))
 				{
 					earthBackground.updateSprite();
 					
@@ -379,7 +380,7 @@ function drawExplosions()
 
 function timeToCreateANewAsteroid()
 {
-	if(times<=0)
+	if(framesLeftUntilNextAsteriodSpawn<=0)
 	{
 		return true;
 		
@@ -408,7 +409,7 @@ function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 				
 				if(numberOfAsteroidsDestroyed==6)
 				{
-					oTimes= oTimes*2/3;
+					frameRateForAsteriodSpawn = frameRateForAsteriodSpawn*2/3;
 					
 				}
 				return true;
@@ -564,12 +565,12 @@ function drawStuff()
 		if(timeToCreateANewAsteroid()==true)
 		{
 			addAsteroid();
-			times=oTimes;
+			framesLeftUntilNextAsteriodSpawn=frameRateForAsteriodSpawn;
 			
 		}
 		else
 		{
-			times--;
+			framesLeftUntilNextAsteriodSpawn--;
 		}
 	}
 	

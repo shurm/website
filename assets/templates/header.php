@@ -15,20 +15,26 @@ if(count(get_included_files()) ==1) exit("Direct access not permitted.");
 			echo "<title>$title</title>";
 
 		?>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="shortcut icon" href="assets/images/gt_favicon.png">
 		
 		<!-- Bootstrap -->
 		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" rel="stylesheet">
-		<!-- Icons -->
+		<!-- Icon font -->
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		
+		
 		<!-- Fonts -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alice|Open+Sans:400,300,700">
-		<!-- Custom styles -->
 		
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	  
+		<!-- Custom styles -->
+		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/util.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
 	
-		<link rel="stylesheet" href="assets/css/styles.css">
+		
 
 		<!--[if lt IE 9]> <script src="assets/js/html5shiv.js"></script> <![endif]-->
 	</head>

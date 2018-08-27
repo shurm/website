@@ -1,3 +1,6 @@
+<?php
+if(count(get_included_files()) ==1) exit("Direct access not permitted.");
+?>		
 </div>	<!-- /container -->
 
 
@@ -20,7 +23,7 @@
 				<div class="widget-body">
 					<p class="follow-me-icons">
 						
-						<a href=""><i class="fa fa-linkedin fa-2"></i></a>
+						<a href="https://www.linkedin.com/in/michael-shur-740022134/"><i class="fa fa-linkedin fa-2"></i></a>
 						<a href=""><i class="fa fa-github fa-2"></i></a>
 						<!--put linkin here -->
 						
@@ -50,7 +53,7 @@
 
 <!--Necessary-->
 <script src="assets/js/main.js"></script>
-
+<script src="assets/js/template.js"></script>
 
 </body>
 </html>

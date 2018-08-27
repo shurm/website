@@ -367,12 +367,13 @@ function showDialog(type)
 	var dialogbox = document.getElementById('dialogbox');
 	var dialogboxhead = document.getElementById('dialogboxhead');
 	var dialogboxbody = document.getElementById('dialogboxbody');
+	var okButton = document.getElementById('okButton');
 	
 	dialogoverlay.style.height = winH+"px";
 	dialogbox.style.left = (winW/2) - (550 * .5)+"px";
 	dialogbox.style.top = "100px";
 	
-	dialogboxbody.innerHTML ='<button onclick="closeDialog()" style="margin-left:30px">OK</button>';
+	//dialogboxbody.innerHTML ='';
 	
 	if(type=="fail")
 	{
@@ -388,7 +389,7 @@ function showDialog(type)
 		dialogboxbody.style.background="#75F775";
 		$("#dialogbox").slideDown("slow");
 	}
-	
+	okButton.style.background="white";
 }
 function closeDialog()
 {
