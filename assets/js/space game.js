@@ -394,13 +394,12 @@ function drawExplosions()
 	}
 }
 
-
+//checks if it is time to create a new asteroid
 function timeToCreateANewAsteroid()
 {
 	if(framesLeftUntilNextAsteroidSpawn<=0)
 	{
 		return true;
-		
 	}
 	return false;
 }
@@ -408,26 +407,30 @@ function timeToCreateANewAsteroid()
 function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 {
 
+	//checks all the asteroids on screen
 	var a;
 	for(a=0;a<asteroids.length;a++)
 	{
-		if(asteroids[a]!=null && asteroids[a].exploding==false )
+		var currentAsteroid = asteroids[a];
+		
+		if(currentAsteroid!=null && currentAsteroid.exploding==false )
 		{
-			var centerX=asteroids[a].x+asteroidSize/2;
-			var centerY=asteroids[a].y+asteroidSize/2;
+			//the coordinates representing the center of the currentAsteroid
+			var centerX=currentAsteroid.x+asteroidSize/2;
+			var centerY=currentAsteroid.y+asteroidSize/2;
 			
 			
 			
-			if(asteroidTest(centerX,centerY,lazorTopLeftX,lazorTopLeftY)==true || asteroidTest(centerX,centerY,lazorTopRightX,lazorTopRightY)==true )
+			if(asteroidTest(centerX,centerY,lazorTopLeftX,lazorTopLeftY)==true || 
+			asteroidTest(centerX,centerY,lazorTopRightX,lazorTopRightY)==true )
 			{
-				asteroids[a].changeToExplosion();
+				currentAsteroid.changeToExplosion();
 				
 				numberOfAsteroidsDestroyed++;
 				
 				if(numberOfAsteroidsDestroyed==6)
 				{
 					frameRateForAsteroidSpawn = frameRateForAsteroidSpawn*2/3;
-					
 				}
 				return true;
 			}	
@@ -437,13 +440,14 @@ function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 	return false;
 }
 
+
 function computeRoots(x,y)
 {
 
-	var mTop= laserCenterY-y;
-	var mBottom=laserCenterX-x;
+	var mTop = laserCenterY-y;
+	var mBottom = laserCenterX-x;
 	
-	var slope=(-1)*mBottom/mTop;
+	var slope= (-1)*mBottom/mTop;
 	
 	//y=mx+b
 	
@@ -520,7 +524,7 @@ function asteroidTest(asteroidCenterX,asteroidCenterY, lazorTopX,lazorTopY)
 	
 		diff-=asteroidSize;
 		
-		array=computeRoots(laserCenterX+(blastY+diff)*Math.cos(theta* Math.PI / 180),laserCenterY+(blastY+diff)*Math.sin(theta* Math.PI / 180));
+		array=computeRoots(laserCenterX+(blastY+diff)*Math.cos(toRadians(theta)),laserCenterY+(blastY+diff)*Math.sin(toRadians(theta)));
 		if(array[3]>array[1])
 		{
 			x=array[2];
@@ -533,7 +537,7 @@ function asteroidTest(asteroidCenterX,asteroidCenterY, lazorTopX,lazorTopY)
 		}
 	}
 	
-	var array=computeRoots(laserCenterX+(blastY)*Math.cos(theta* Math.PI / 180),laserCenterY+(blastY)*Math.sin(theta* Math.PI / 180));
+	var array=computeRoots(laserCenterX+(blastY)*Math.cos(toRadians(theta)),laserCenterY+(blastY)*Math.sin(toRadians(theta)));
 	if(array[3]>array[1])
 	{
 		x=array[2];
@@ -559,7 +563,6 @@ function drawStuff()
 {
 	// reset current transformation matrix to the identity matrix
 	//resets the canvas
-
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -604,7 +607,7 @@ function drawStuff()
 	//draws the laser
 	if(laserHasBeenFired==true)
 	{
-		ctx.rotate(blastRotation* Math.PI / 180);
+		ctx.rotate(toRadians(blastRotation));
 		ctx.drawImage(laser_blast,blastX,blastY,laserBlastWidth,laserBlastHeight);
 		
 		
@@ -620,13 +623,14 @@ function drawStuff()
 		
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 	
-		var lowerPoints=computeRoots(laserCenterX+(blastY)*Math.cos(theta* Math.PI / 180),laserCenterY+(blastY)*Math.sin(theta* Math.PI / 180));
+		var lowerPoints=computeRoots(laserCenterX+(blastY)*Math.cos(toRadians(theta)),
+		laserCenterY+(blastY)*Math.sin(toRadians(theta)));
 
 	
-		var upperPoints=computeRoots(laserCenterX+(blastY+laserBlastHeight)*Math.cos(theta* Math.PI / 180),laserCenterY+(blastY+laserBlastHeight)*Math.sin(theta* Math.PI / 180));
+		var upperPoints=computeRoots(laserCenterX+(blastY+laserBlastHeight)*Math.cos(toRadians(theta)),laserCenterY+(blastY+laserBlastHeight)*Math.sin(toRadians(theta)));
 		
 		
-		var lazorTopLeftX=-10,lazorTopLeftY=-10,lazorTopRightX=-10,lazorTopRightY=-10;
+		var lazorTopLeftX=0,lazorTopLeftY=0,lazorTopRightX=0,lazorTopRightY=0;
 		
 		if(upperPoints[0]<upperPoints[2])
 		{
@@ -657,9 +661,9 @@ function drawStuff()
 	
 	
 	
-	ctx.rotate(laserStartingRotation* Math.PI / 180);
+	ctx.rotate(toRadians(laserStartingRotation));
 	
-	ctx.rotate(d* Math.PI / 180);
+	ctx.rotate(toRadians(d));
 	
 	
 	//draws the laserGun
@@ -704,3 +708,17 @@ function drawStuff()
 	
 
 }
+
+// Converts from degrees to radians.
+function toRadians(degrees) 
+{
+  return degrees * Math.PI / 180;
+}
+
+// Converts from radians to degrees.
+function toDegrees(radians) 
+{
+  return radians * 180 / Math.PI;
+}
+
+
