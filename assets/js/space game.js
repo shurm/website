@@ -1,15 +1,25 @@
 
 var filePath="assets/images/space_game/"
+
+//limit is 6
 var asteroidSpeed=2;
+var asteroidSpeedLimit=6;
 var timeIntervalUntilNextFrame=10;
-var asteroidsToDestoryBeforeItGetsHarder = 7;
+var asteroidsToDestoryBeforeItGetsHarder = 8;
 var asteroidAnimationFrameDelay=2;
 var laserBlastSpeed=20;
 var lives;
 var gameOverTextSize=60;
 
 var maxAsteroidsOnScreen=10;
-var frameRateForAsteriodSpawn=2500/timeIntervalUntilNextFrame;
+
+//limit is 1500
+var timeIntervalForAsteroidSpawning = 2500;
+var timeLimitForAsteroidSpawning = 1500;
+
+
+
+var frameRateForAsteroidSpawn=timeIntervalForAsteroidSpawning/timeIntervalUntilNextFrame;
 
 
 var canvas = document.getElementById("myCanvas");
@@ -32,9 +42,9 @@ var asteroidSize = 50;
 var laserHasBeenFired=false;
 
 
-var framesLeftUntilNextAsteriodSpawn=frameRateForAsteriodSpawn;
+var framesLeftUntilNextAsteroidSpawn=frameRateForAsteroidSpawn;
 
-var startR=110;
+var laserStartingRotation=110;
 var d=1;
 
 var theta =0;
@@ -119,6 +129,13 @@ function asteroidGame()
 	gameVariable=setInterval(drawStuff,timeIntervalUntilNextFrame);
 }
 
+function NumberTriple(value, delta, limit) 
+{
+  this.value = value;
+  this.delta = delta;
+  this.limit = limit;
+}
+
 function gameOverFunction()
 {
 	clearInterval(gameVariable);
@@ -170,7 +187,7 @@ function calculateRotation(evt)
 	var c=Math.pow((Y_intercept - centerY),2)+Math.pow(centerX,2)-Math.pow(radius,2);
 	
 	
-	//var newX=Math.pow(b,2)-4*a*c;
+	//var newX=Math.pow(b,2)-4*a*c; using the quadratic formula
 	var newX;
 	if(mouseX>centerX)
 		newX=((-1)*b+Math.sqrt(Math.pow(b,2)-4*a*c))/(2*a);
@@ -179,7 +196,7 @@ function calculateRotation(evt)
 		
 	var newY=newX*slope+Y_intercept;
 	var hDegrees=Math.atan((newY-centerY)/(newX-centerX))*180/Math.PI;
-	var diff=startR-90;
+	var diff=laserStartingRotation-90;
 	if(mouseX<centerX)
 	{
 		if(hDegrees<diff)
@@ -193,9 +210,9 @@ function calculateRotation(evt)
 	{
 		hDegrees*=(-1);
 		hDegrees=180-hDegrees;
-		if(hDegrees>(270-startR))
+		if(hDegrees>(270-laserStartingRotation))
 		{
-			hDegrees=(270-startR)-diff;
+			hDegrees=(270-laserStartingRotation)-diff;
 		}
 		else
 		{
@@ -205,7 +222,7 @@ function calculateRotation(evt)
 	else
 	{
 		if(mouseY<centerY)
-			hDegrees=180-startR;
+			hDegrees=180-laserStartingRotation;
 	}
 	return hDegrees;
 }
@@ -237,7 +254,7 @@ function fireLaser(evt)
 			blastX=laserX-laserBlastWidth/2;
 			blastY=laserY+laserGunHeight;
 		
-			blastRotation=startR+d;
+			blastRotation=laserStartingRotation+d;
 			
 			theta=blastRotation+90;
 			
@@ -319,7 +336,7 @@ function drawAsteroids()
 				
 				
 				if(gameOver==false)
-					asteroids[a].y=asteroids[a].y+=asteroidSpeed;
+					asteroids[a].y+=asteroidSpeed;
 				
 				asteroids[a].delay=asteroidAnimationFrameDelay;
 				if(hasHitTheEarth(asteroids[a]))
@@ -380,7 +397,7 @@ function drawExplosions()
 
 function timeToCreateANewAsteroid()
 {
-	if(framesLeftUntilNextAsteriodSpawn<=0)
+	if(framesLeftUntilNextAsteroidSpawn<=0)
 	{
 		return true;
 		
@@ -409,7 +426,7 @@ function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 				
 				if(numberOfAsteroidsDestroyed==6)
 				{
-					frameRateForAsteriodSpawn = frameRateForAsteriodSpawn*2/3;
+					frameRateForAsteroidSpawn = frameRateForAsteroidSpawn*2/3;
 					
 				}
 				return true;
@@ -565,12 +582,12 @@ function drawStuff()
 		if(timeToCreateANewAsteroid()==true)
 		{
 			addAsteroid();
-			framesLeftUntilNextAsteriodSpawn=frameRateForAsteriodSpawn;
+			framesLeftUntilNextAsteroidSpawn=frameRateForAsteroidSpawn;
 			
 		}
 		else
 		{
-			framesLeftUntilNextAsteriodSpawn--;
+			framesLeftUntilNextAsteroidSpawn--;
 		}
 	}
 	
@@ -640,7 +657,7 @@ function drawStuff()
 	
 	
 	
-	ctx.rotate(startR* Math.PI / 180);
+	ctx.rotate(laserStartingRotation* Math.PI / 180);
 	
 	ctx.rotate(d* Math.PI / 180);
 	
