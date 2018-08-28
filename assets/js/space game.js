@@ -45,7 +45,7 @@ var laserHasBeenFired=false;
 var framesLeftUntilNextAsteroidSpawn=frameRateForAsteroidSpawn;
 
 var laserStartingRotation=110;
-var d=1;
+var additionalLaserRotation=1;
 
 var theta =0;
 var sideLength=0;
@@ -236,9 +236,9 @@ function moveLaser(evt)
 		
 		
 		
-		d=calculateRotation(evt);
+		additionalLaserRotation=calculateRotation(evt);
 		
-		if(d<=40 || d>=110)
+		if(additionalLaserRotation<=40 || additionalLaserRotation>=110)
 			laserY-=5;
 	}
 }
@@ -254,7 +254,7 @@ function fireLaser(evt)
 			blastX=laserX-laserBlastWidth/2;
 			blastY=laserY+laserGunHeight;
 		
-			blastRotation=laserStartingRotation+d;
+			blastRotation=laserStartingRotation+additionalLaserRotation;
 			
 			theta=blastRotation+90;
 			
@@ -302,8 +302,8 @@ function isLaserOffScreen()
 		return true;
 	return false;
 }
-//draws the asteroids 
 
+//draws the asteroids 
 function drawAsteroids()
 {
 	var a;
@@ -524,7 +524,8 @@ function asteroidTest(asteroidCenterX,asteroidCenterY, lazorTopX,lazorTopY)
 	
 		diff-=asteroidSize;
 		
-		array=computeRoots(laserCenterX+(blastY+diff)*Math.cos(toRadians(theta)),laserCenterY+(blastY+diff)*Math.sin(toRadians(theta)));
+		array=computeRoots(laserCenterX+(blastY+diff)*Math.cos(toRadians(theta)),
+		laserCenterY+(blastY+diff)*Math.sin(toRadians(theta)));
 		if(array[3]>array[1])
 		{
 			x=array[2];
@@ -663,7 +664,7 @@ function drawStuff()
 	
 	ctx.rotate(toRadians(laserStartingRotation));
 	
-	ctx.rotate(toRadians(d));
+	ctx.rotate(toRadians(additionalLaserRotation));
 	
 	
 	//draws the laserGun
@@ -676,14 +677,7 @@ function drawStuff()
 	
 	if(gameOver==false)
 	{
-		ctx.font = scoreTextSize+'pt Calibri';
-		ctx.lineWidth = 2;
-
-		// stroke color
-		ctx.strokeStyle = 'white';
-		
-		var maxScoreLength=7+7;
-		ctx.strokeText("Score: "+currentScore, canvas.width-(scoreTextSize/2*maxScoreLength),  scoreTextSize+10);
+		drawScoreText();
 	}
 	else
 	{
@@ -707,6 +701,18 @@ function drawStuff()
 	}
 	
 
+}
+
+function drawScoreText()
+{
+	ctx.font = scoreTextSize+'pt Calibri';
+	ctx.lineWidth = 2;
+
+	// stroke color
+	ctx.strokeStyle = 'white';
+	
+	var maxScoreLength=7+7;
+	ctx.strokeText("Score: "+currentScore, canvas.width-(scoreTextSize/2*maxScoreLength),  scoreTextSize+10);
 }
 
 // Converts from degrees to radians.
