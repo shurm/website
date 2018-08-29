@@ -3,7 +3,9 @@ var filePath="assets/images/space_game/"
 
 //limit is 6
 var asteroidSpeed=2;
+
 var asteroidSpeedLimit=6;
+
 var timeIntervalUntilNextFrame=10;
 var asteroidsToDestoryBeforeItGetsHarder = 8;
 var asteroidAnimationFrameDelay=2;
@@ -94,7 +96,7 @@ var gameVariable;
 
 function asteroidGame()
 {
-	gameOverFunction();
+	disableInputAndAnimation();
 	
 	earthBackground=new Sprite(filePath+"Earth-Sprite-Sheet.png",4,4,1);
 	//document.getElementById("myCanvas");
@@ -124,19 +126,18 @@ function asteroidGame()
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	
 	
+	enableInputAndAnimation();
+}
+
+function enableInputAndAnimation()
+{
 	canvas.addEventListener("mousemove", moveLaser);
 	canvas.addEventListener("click", fireLaser);
 	gameVariable=setInterval(drawStuff,timeIntervalUntilNextFrame);
 }
 
-function NumberTriple(value, delta, limit) 
-{
-  this.value = value;
-  this.delta = delta;
-  this.limit = limit;
-}
 
-function gameOverFunction()
+function disableInputAndAnimation()
 {
 	clearInterval(gameVariable);
 	canvas.removeEventListener("mousemove", moveLaser);
@@ -163,8 +164,8 @@ function calculateRotation(evt)
 	var radius=laserStandWidth;
 	
 	var rect= canvas.getBoundingClientRect();
-	var mouseX=evt.clientX-rect.left;
-	var mouseY=evt.clientY-rect.top;
+	var mouseX = evt.clientX-rect.left;
+	var mouseY = evt.clientY-rect.top;
 	
 	var centerY=laserCenterY;
 	var centerX=laserCenterX;
@@ -176,15 +177,15 @@ function calculateRotation(evt)
 	
 
 	//(m^2+1)*x^2+(2*b*m-2*k*m-2*h)*x+((b-k)^2+h^2-r^2)
-	var a=(Math.pow(slope,2)+1);
+	var a = (Math.pow(slope,2)+1);
 
 	
 
 	//cant handle parathesis on the outside
-	var b=2*Y_intercept*slope-2*centerY*slope-2*centerX;
+	var b = 2*Y_intercept*slope - 2*centerY*slope - 2*centerX;
 	
 	
-	var c=Math.pow((Y_intercept - centerY),2)+Math.pow(centerX,2)-Math.pow(radius,2);
+	var c =Math.pow((Y_intercept - centerY),2)+Math.pow(centerX,2)-Math.pow(radius,2);
 	
 	
 	//var newX=Math.pow(b,2)-4*a*c; using the quadratic formula
@@ -238,7 +239,7 @@ function moveLaser(evt)
 		
 		additionalLaserRotation=calculateRotation(evt);
 		
-		if(additionalLaserRotation<=40 || additionalLaserRotation>=110)
+		if(additionalLaserRotation<=40 || additionalLaserRotation>=laserStartingRotation)
 			laserY-=5;
 	}
 }
@@ -288,8 +289,8 @@ function addAsteroid()
 
 function hasHitTheEarth(asteroid)
 {
-	var end = canvas.height-asteroid.size;
-	if(asteroid.y>=end)
+	var bottomOfScreen = canvas.height-asteroid.size;
+	if(asteroid.y>=bottomOfScreen)
 	{
 		return true;
 	}
@@ -303,7 +304,7 @@ function isLaserOffScreen()
 	return false;
 }
 
-//draws the asteroids 
+//draws the asteroids onto the canvas
 function drawAsteroids()
 {
 	var a;
@@ -428,9 +429,9 @@ function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 				
 				numberOfAsteroidsDestroyed++;
 				
-				if(numberOfAsteroidsDestroyed==6)
+				if(numberOfAsteroidsDestroyed % asteroidsToDestoryBeforeItGetsHarder==0)
 				{
-					frameRateForAsteroidSpawn = frameRateForAsteroidSpawn*2/3;
+					increaseDifficulty();
 				}
 				return true;
 			}	
@@ -440,6 +441,13 @@ function hitAAsteroid(lazorTopLeftX,lazorTopLeftY,lazorTopRightX,lazorTopRightY)
 	return false;
 }
 
+function increaseDifficulty()
+{
+	if(timeIntervalForAsteroidSpawning > timeLimitForAsteroidSpawning || asteroidSpeed < asteroidSpeedLimit)
+	{
+		
+	}
+}
 
 function computeRoots(x,y)
 {
@@ -681,26 +689,28 @@ function drawStuff()
 	}
 	else
 	{
-	
-		ctx.fillStyle="black";
-		ctx.fillRect(0,canvas.height/3,canvas.width,canvas.height/3);
-		
-		ctx.font = gameOverTextSize+'pt Calibri';
-		
-		ctx.fillStyle="red";
-		
-		ctx.fillText("Game Over", 10, canvas.height/3+gameOverTextSize+10); 
-		
-		ctx.fillStyle="white";
-		
-		ctx.font = (2*scoreTextSize)+'pt Calibri';
-		
-		ctx.fillText("Score: "+currentScore, 10, canvas.height/3+gameOverTextSize+10+gameOverTextSize );
-		
-		gameOverFunction();
+		drawGameOverWindow();	
 	}
-	
+}
 
+function drawGameOverWindow()
+{
+	ctx.fillStyle="black";
+	ctx.fillRect(0,canvas.height/3,canvas.width,canvas.height/3);
+	
+	ctx.font = gameOverTextSize+'pt Calibri';
+	
+	ctx.fillStyle="red";
+	
+	ctx.fillText("Game Over", 10, canvas.height/3+gameOverTextSize+10); 
+	
+	ctx.fillStyle="white";
+	
+	ctx.font = (2*scoreTextSize)+'pt Calibri';
+	
+	ctx.fillText("Score: "+currentScore, 10, canvas.height/3+gameOverTextSize+10+gameOverTextSize );
+	
+	disableInputAndAnimation();
 }
 
 function drawScoreText()
@@ -726,5 +736,7 @@ function toDegrees(radians)
 {
   return radians * 180 / Math.PI;
 }
+
+
 
 
