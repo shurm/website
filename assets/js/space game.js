@@ -1,14 +1,15 @@
 
 var filePath="assets/images/space_game/"
 
+var currentIncrease = 10;
 //limit is 6
 var asteroidSpeed=2;
-
+var changeRateForAsteroidSpeed=1;
 var asteroidSpeedLimit=6;
 
 var timeIntervalUntilNextFrame=10;
-var asteroidsToDestoryBeforeItGetsHarder = 8;
-var asteroidAnimationFrameDelay=2;
+var asteroidsToDestoryBeforeItGetsHarder = 3;
+var asteroidAnimationFrameDelay=  2;
 var laserBlastSpeed=20;
 var lives;
 var gameOverTextSize=60;
@@ -16,8 +17,9 @@ var gameOverTextSize=60;
 var maxAsteroidsOnScreen=10;
 
 //limit is 1500
-var timeIntervalForAsteroidSpawning = 2500;
-var timeLimitForAsteroidSpawning = 1500;
+var timeIntervalForAsteroidSpawning = 1600;
+var timeLimitForAsteroidSpawning = 600;
+var changeRateForAsteroidSpawningTime = 200;
 
 
 
@@ -445,7 +447,34 @@ function increaseDifficulty()
 {
 	if(timeIntervalForAsteroidSpawning > timeLimitForAsteroidSpawning || asteroidSpeed < asteroidSpeedLimit)
 	{
-		
+		if(timeIntervalForAsteroidSpawning <= timeLimitForAsteroidSpawning)
+			asteroidSpeed+=changeRateForAsteroidSpeed;
+		else if(asteroidSpeed >= asteroidSpeedLimit)
+		{
+			timeIntervalForAsteroidSpawning = timeIntervalForAsteroidSpawning - changeRateForAsteroidSpawningTime;
+			//alert(timeIntervalForAsteroidSpawning);
+			frameRateForAsteroidSpawn=timeIntervalForAsteroidSpawning/timeIntervalUntilNextFrame;
+			//alert(frameRateForAsteroidSpawn);
+		}
+		else
+		{
+			var a =(timeIntervalForAsteroidSpawning - timeLimitForAsteroidSpawning)/changeRateForAsteroidSpawningTime;
+			
+			var b =(asteroidSpeedLimit - asteroidSpeed)/changeRateForAsteroidSpeed;
+			
+			if(a>=b)
+			{
+				timeIntervalForAsteroidSpawning = timeIntervalForAsteroidSpawning - changeRateForAsteroidSpawningTime;
+				//alert(timeIntervalForAsteroidSpawning);
+				frameRateForAsteroidSpawn=timeIntervalForAsteroidSpawning/timeIntervalUntilNextFrame;
+				//alert(frameRateForAsteroidSpawn);
+			}
+			else
+			{
+				asteroidSpeed+=changeRateForAsteroidSpeed;
+			}
+		}
+		currentIncrease+=10;
 	}
 }
 
@@ -595,6 +624,7 @@ function drawStuff()
 		{
 			addAsteroid();
 			framesLeftUntilNextAsteroidSpawn=frameRateForAsteroidSpawn;
+			//alert(frameRateForAsteroidSpawn);
 			
 		}
 		else
@@ -662,7 +692,7 @@ function drawStuff()
 		else
 		{
 			laserHasBeenFired=false;
-			currentScore+=50;
+			currentScore+=currentIncrease;
 		}	
 		ctx.translate(laserCenterX, laserCenterY);
 	}	
